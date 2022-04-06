@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-
+import './question.dart';
+import './answer.dart';
 // void main() {
 //   runApp(MyApp());
 // }
@@ -13,55 +14,57 @@ void main() => runApp(MyApp());
 class MyApp extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return MyAppState();
+    return _MyAppState();
   }
 }
 
-class MyAppState extends State<MyApp> {
-  var questionIndex = 0;
+class _MyAppState extends State<MyApp> {
+  var _questionIndex = 0;
 
   // note: create a function only when the line of code gets too long or the process you want the code gets too complex.
-  void answerQuestion() {
+  void _answerQuestion() {
     // setState() - a method that allows the developer to make changes once user interacts with a button on the page of the application.
+    // setState calls the build method of the widget where we call setState() where in the build method re-runs the build method.
     setState(() {
-      questionIndex++;
-      print(questionIndex);
+      _questionIndex++;
+      print(_questionIndex);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     var questions = [
-      'What\'s your favorite color?',
-      'What\'s your favorite animal?',
+      {
+        'questionText': 'What\'s your favorite color?',
+        'answers': ['Black', 'Red', 'White', 'Teal'],
+      },
+      {
+        'questionText': 'What\'s your favorite animal?',
+        'answers': ['Dog', 'Rabbit', 'Lion', 'Tiger']
+      },
+      {
+        'questionText': 'Who\'s your favorite instructor?',
+        'answers': ['Colt Steele', 'Maximillian', 'Brad Schiff', 'Angela Yu']
+      },
     ];
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.teal,
         appBar: AppBar(
-          title: Text('My First App'),
+          backgroundColor: Colors.teal[900],
+          title: Text(
+            'My First App',
+          ),
         ),
-        body: Center(
-          child: Column(children: [
-            Text(questions[questionIndex]),
-            RaisedButton(
-              child: Text('Answer 1'),
-              // for onPressed flutter function: do not inlude parenthesis. only use the name of the function we made.
-              onPressed: answerQuestion,
-            ),
-            RaisedButton(
-              child: Text('Answer 2'),
-              onPressed: () => print('Answer 2 chosen!'),
-            ),
-            RaisedButton(
-              child: Text('Answer 3'),
-              // this is an anonymous function. best to be used when the function has no name.
-              onPressed: () {
-                print('Answer 3 chosen');
-              },
-            ),
-          ]),
-        ),
+        body: Column(children: [
+          Question(questions[_questionIndex]['questionIndex']),
+          questions[_questionIndex]['answers'].map((question) {
+            return Answer(question);
+          })
+          // Answer(_answerQuestion),
+          // Answer(_answerQuestion),
+          // Answer(_answerQuestion),
+        ]),
       ),
     );
   }
